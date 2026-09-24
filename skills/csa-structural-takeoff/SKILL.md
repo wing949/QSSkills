@@ -42,7 +42,21 @@ description: |
    * Móng máy: Bổ sung vát góc 4 cạnh chamfer ($m$), xoa bề mặt ($m^2$), vữa Sika Grout chân máy ($m^3$).
    * Bể ngầm: Bổ sung chống thấm lỗ ty ván khuôn ($Cái$), băng cản nước Waterstop V20 ($m$), cán vữa tạo dốc ($m^2$), chống thấm 2 mặt ($m^2$).
 
-6. **BÀN GIAO:** Gửi dữ liệu chuẩn cho `csa-orchestrator`, gồm cả phần ván khuôn đáy dầm/sàn cần chuyển cho Hoàn thiện. Chỉ `csa-orchestrator` phát hành workbook.
+6. **KẾT CẤU THÉP THỨ CẤP, XÀ GỒ & GIAO THỨC TRÍCH XUẤT CAD ĐA NGUỒN (PURLINS & MULTI-SOURCE EXTRACTION):**
+   * **Giao thức trích xuất Text 4 nguồn (Bắt buộc):** Tuyệt đối KHÔNG chỉ đọc `TEXT` & `MTEXT`. Kỹ sư kết cấu thường gắn thông số kỹ thuật vào các đối tượng đồ họa khác. Bắt buộc quét đủ 4 nguồn:
+     1. `TEXT` & `MTEXT` (văn bản ghi chú thông thường).
+     2. `DIMENSION.text` & `actual_measurement` (quy cách xà gồ Z/C, khoảng cách `@...mm`, chiều dài nối chồng `Total lapsplice ...mm` thường nằm trực tiếp trên đường Dim).
+     3. `BLOCK ATTRIBUTES` (thẻ `ATTRIB` / `ATTDEF` - chứa tiêu đề mặt bằng như `PURLIN LAYOUT PLAN`, tỷ lệ, ký hiệu cấu kiện).
+     4. `LEADER` / `MULTILEADER` (mũi tên chỉ dẫn ghi chú vật liệu).
+   * **Khoanh vùng Khung nhìn (View Bounding Box Isolation):** Khi bóc xà gồ mái hoặc bất kỳ mặt bằng nào, phải tìm đúng tọa độ Tiêu đề bản vẽ (`PURLIN LAYOUT PLAN`), khoanh vùng Bounding Box $(X_{\min}, Y_{\min}) \rightarrow (X_{\max}, Y_{\max})$, và **CHỈ ĐƯỢC PHÉP TRÍCH XUẤT THỰC THỂ NẰM TRONG BOUNDING BOX ĐÓ**. Tuyệt đối không quét text toàn file để tránh vơ nhầm xà gồ vách (Horizontal Girt), chi tiết Canopy, hoặc tàn dư của bản vẽ cũ (DWG clone remnants).
+   * **Cấm chia nhịp ước lượng (Zero Fabrication):** Khi CAD đã có mặt bằng bố trí xà gồ, bắt buộc mở Block con (`nested block` / `line array`) đếm chính xác số hàng xà gồ thực tế vẽ trong CAD. CẤM tự ý chia nhịp hình học $L / \text{spacing} + 1$.
+   * **Phân định rõ ràng các hệ thép thứ cấp:**
+     * **Xà gồ mái (Roof Purlins):** Thường là thép Z mạ kẽm (Z150, Z200) dốc theo mái, có nối chồng lapsplice tại gối dầm.
+     * **Xà gồ vách (Wall Girts / Horizontal Girts):** Thường là thép C mạ kẽm (C150, C200) chạy ngang quanh chu vi tường.
+     * **Ty giằng xà gồ (Sag rods):** Thép tròn Rod D10/D12 kết hợp giằng chéo đỉnh mái.
+     * **Bản mã gối đỡ (Purlin cleats) & Bu lông nở:** Số lượng gối đỡ tính chính xác bằng $N_{\text{gối}} = N_{\text{hàng xà gồ}} \times N_{\text{khung dầm đỡ}}$.
+
+7. **BÀN GIAO:** Gửi dữ liệu chuẩn cho `csa-orchestrator`, gồm cả phần ván khuôn đáy dầm/sàn cần chuyển cho Hoàn thiện. Chỉ `csa-orchestrator` phát hành workbook.
 
 # Constraints
 - 🎯 **CHUẨN 5 CỘT KỸ THUẬT (A - E):** Tập trung tuyệt đối vào 5 cột kỹ thuật (A: STT/WBS, B: Diễn giải tam ngữ, C: ĐVT, D: Khối lượng CAD in đậm, E: Công thức hình học chi tiết in nghiêng). TUYỆT ĐỐI KHÔNG chèn dòng phụ (1 Item = 1 Single Row).

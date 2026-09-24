@@ -28,6 +28,7 @@ Bảng Schedule chỉ là nguồn đối chiếu; không thay thế kích thư�
 - Thép gồm thanh, nối chồng, neo, phụ kiện cấu tạo khi có thể hiện/chỉ dẫn; lượng hao hụt cắt uốn để riêng `PROCUREMENT_ONLY`.
 - Các ngưỡng “không trừ lỗ mở” là mặc định có điều kiện, chỉ dùng khi hợp đồng/spec/phương pháp đo bóc hoặc ghi chú bản vẽ cho phép. Nếu không, đo theo hình học thực tế và ghi rõ cơ sở.
 
+- Kết cấu thép thứ cấp & xà gồ (Purlins, Girts, Cleats): Phải trích xuất đủ 4 nguồn dữ liệu văn bản CAD (TEXT, DIMENSION.text, BLOCK ATTRIBUTES, LEADER) và khoanh vùng độc lập từng mặt bằng. Bắt buộc đếm số hàng xà gồ vẽ thực tế trong CAD Block, cấm chia nhịp ước lượng ( / \text{spacing} + 1$). Phân biệt rõ tiết diện Z-profile (xà gồ mái có nối chồng lapsplice) vs C-profile (xà gồ vách Horizontal Girt/Canopy). Số lượng gối đỡ và bu lông nở phải khớp {\text{gối}} = N_{\text{hàng xà gồ}} \times N_{\text{khung dầm đỡ}}$.\n
 ## 4. Đất và Earthwork_Balance
 
 Tách ít nhất các trạng thái: `IN_SITU_EXCAVATION`, `LOOSE_HAUL`, `COMPACTED_FILL`, `REUSE`, `IMPORTED`, `DISPOSAL`. Hệ số chuyển đổi, taluy, không gian thao tác, shoring, hạ nước, tuyến vận chuyển hoặc tally chỉ dùng khi hồ sơ/phương pháp được duyệt nêu rõ.

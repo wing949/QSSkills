@@ -87,6 +87,11 @@ flowchart TD
    * **QUY TẮC ĐỐI CHIẾU CHÉO 3 CHIỀU (3-WAY CROSS-CHECK AUDIT):**
      * **Cửa đi & Cửa sổ:** Bắt buộc đối chiếu chéo giữa **Mặt bằng (Floor Plan)** $\leftrightarrow$ **Mặt đứng (Elevations)** $\leftrightarrow$ **Mặt cắt (Sections)** $\leftrightarrow$ **Bảng Schedule**. Bắt buộc ghi rõ: Đếm thực tế từng vị trí trên Mặt bằng $\leftrightarrow$ Kiểm tra kích thước $W \times H$ và cao độ bậu cửa trên Mặt đứng $\leftrightarrow$ Đối chiếu với Schedule. Từ chối chấp nhận mọi khối lượng chỉ trích dẫn thụ động từ Schedule mà không kiểm tra định vị và kích thước thực tế trên hình vẽ.
      * **Cốt thép:** Bắt buộc đo kiểm chiều dài thanh trên mặt cắt cấu kiện, kiểm tra đoạn nối chồng ($35d - 40d$), thép con kê/chân chó, không chỉ cộng dồn từ bảng thống kê thép.
+     * **Xà gồ & Kết cấu thép thứ cấp (Purlins & Secondary Steel):**
+       * Bắt buộc kiểm tra chéo: Tiết diện xà gồ mái (Z-profile dốc) vs xà gồ vách (C-profile ngang), không để xảy ra nhầm lẫn với thanh giằng vách (Horizontal Girt) hoặc khung đón Canopy.
+       * Kiểm tra trực tiếp trên đường kích thước (DIMENSION.text): Xem rõ quy cách, khoảng cách và ghi chú nối chồng (@...mm - Total lapsplice ...mm).
+       * Bắt buộc đếm số hàng xà gồ vẽ thực tế trong Block mặt bằng xà gồ (PURLIN LAYOUT PLAN). TUYỆT ĐỐI TỪ CHỐI khối lượng tính bằng phép chia nhịp ước lượng ( / \text{spacing} + 1$).
+       * Số lượng bản mã gối đỡ (Purlin cleats) và bu lông nở phải khớp đúng {\text{gối}} = N_{\text{hàng xà gồ}} \times N_{\text{khung dầm đỡ}}$.
      * **Diện tích phòng & ốp lát:** Bắt buộc kiểm tra kích thước lọt lòng thực tế trên mặt bằng ($L_{\text{lọt lòng}} \times W_{\text{lọt lòng}} - \sum S_{\text{cột lồi}} - S_{\text{lỗ mở}}$), không chỉ lấy số liệu làm tròn từ Room Schedule.
      * 🚨 **ĐIỀU KHOẢN LOẠI TRỪ (HARD KNOCKOUT CRITERION):** Trong Cột E, **TUYỆT ĐỐI NGHIÊM CẤM** ghi cụt ngủn hoặc trích dẫn thụ động *"Theo Bảng thống kê..."* / *"Theo Schedule..."* mà không có công thức kích thước hình học lọt lòng thực tế ($L \times W - \sum S_{\text{khấu trừ}}$) hoặc số đếm định vị chi tiết trên Mặt bằng. Bất kỳ dòng nào vi phạm điều này đều bị Cổng 3 và Cổng 4 **ĐÁNH TRƯỢT NGAY LẬP TỨC** và bắt buộc phải đo bóc lại từ CAD.
 4. **CỔNG 4: Kiểm tra Chéo Liên phòng ban & Đồng bộ Kết cấu - Kiến trúc:**
