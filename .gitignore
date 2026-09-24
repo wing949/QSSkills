@@ -1,0 +1,23 @@
+# Git ignore rules for QSSkills / csa-takeoff-suite
+
+# Python cache & compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Temporary and test outputs
+*.tmp
+*.log
+*.bak
+.DS_Store
+Thumbs.db
+
+# Excel test workbooks
+tests/*.xlsx

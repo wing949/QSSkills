@@ -1,0 +1,26 @@
+{
+  "Civil_Structure": {
+    "土石方工程": "Công tác đất đá",
+    "桩基工程": "Công tác cọc móng",
+    "砌体工程": "Công tác xây tường",
+    "混凝土及钢筋混凝土工程": "Công tác bê tông và bê tông cốt thép",
+    "钢结构工程": "Công tác kết cấu thép",
+    "屋面及防水工程": "Công tác chống thấm và mái",
+    "保温、隔热、防腐工程": "Công tác bảo ôn, cách nhiệt, chống ăn mòn"
+  },
+  "MEPF_Electrical": {
+    "配电箱": "Tủ phân phối điện",
+    "成套配电箱": "Tủ phân phối điện đồng bộ",
+    "消防动力配电箱": "Tủ phân phối nguồn động lực PCCC",
+    "电缆桥架": "Máng cáp / Thang máng cáp",
+    "穿线管 / 配管": "Ống luồn dây điện",
+    "母线槽": "Thanh dẫn điện Busway"
+  },
+  "MEPF_HVAC_Plumbing_Firefighting": {
+    "消火栓钢管": "Ống thép cấp nước chữa cháy vách tường",
+    "湿式报警阀组": "Cụm van báo động ướt (Wet Alarm Valve Set)",
+    "多联机室内机": "Dàn lạnh điều hòa trung tâm VRV/VRF",
+    "轴流式消防补风风机": "Quạt cấp gió bù PCCC dạng hướng trục",
+    "防雨百叶风口": "Cửa gió nan chớp chống mưa"
+  }
+}

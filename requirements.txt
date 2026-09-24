@@ -1,0 +1,8 @@
+# Danh muc thu vien Python bat buoc cho He sinh thai CSA Takeoff Suite
+# Cai dat bang lenh: pip install -r requirements.txt
+
+openpyxl>=3.1.2     # Doc, ghi, dinh dang bang tinh Excel BOQ 4-Sheet chuan Executive Corporate & AutoFit
+ezdxf>=1.1.0        # Doc, phan tich truc tiep thuc the ban ve CAD (.dxf): Layer, Text, Dimension, Coordinate
+pymupdf>=1.23.0     # (fitz) Doc va trich xuat van ban, do tim toa do vector tu ban ve PDF
+matplotlib>=3.7.0   # Ve bieu do phan tich co cau khoi luong & QA/QC
+pillow>=10.0.0      # Xu ly va kiem tra hinh anh trich xuat tu ban ve
