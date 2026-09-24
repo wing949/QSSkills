@@ -1358,7 +1358,8 @@ def _validate_release_data(wb, document_register=None):
         target = str(qa.cell(row=row_idx, column=3).value or "").strip()
         status = str(qa.cell(row=row_idx, column=8).value or "").strip()
         audit_date = _parse_iso_date(qa.cell(row=row_idx, column=9).value)
-        if gate not in REQUIRED_GATES:
+        base_gate = gate.split(".")[0].strip() if "." in gate else gate
+        if base_gate not in REQUIRED_GATES and gate not in REQUIRED_GATES:
             errors.append(f"QA_Audit dòng {row_idx}: Gate không hợp lệ ({gate})")
             continue
         if status not in QA_VALID_STATUSES:
@@ -1375,10 +1376,11 @@ def _validate_release_data(wb, document_register=None):
 
     passed_gates = set()
     for (gate, _target), (_audit_date, _row_idx, status) in effective_qa_statuses.items():
+        base_gate = gate.split(".")[0].strip() if "." in gate else gate
         if status in {"Open", "RFI Required"}:
             errors.append(f"QA_Audit: {gate} còn trạng thái {status}, không thể phát hành")
         if status == "Pass":
-            passed_gates.add(gate)
+            passed_gates.add(base_gate)
     for gate in REQUIRED_GATES:
         if gate not in passed_gates:
             errors.append(f"QA_Audit: {gate} chưa có trạng thái Pass hiệu lực")

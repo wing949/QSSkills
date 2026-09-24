@@ -111,16 +111,21 @@ flowchart TD
 - 🔍 **BẮT BUỘC ĐỐI CHIẾU CHÉO 3 CHIỀU:** Kiểm tra Mặt bằng $\leftrightarrow$ Mặt đứng $\leftrightarrow$ Schedule, loại bỏ ngay các sai lệch do bảng Schedule ghi thừa/sai mã hiệu.
 - 🚫 Bắt buộc từ chối thông qua nếu phát hiện lỗi công thức hoặc hàm lượng thép lệch quá $\pm 15\%$ mà không có giải trình kỹ thuật hợp lý.
 - 🚨 **TUYỆT ĐỐI CẤM BỊA SỐ LIỆU (ZERO FABRICATION POLICY):** Trong quá trình thẩm tra, nếu phát hiện bất kỳ con số khối lượng nào KHÔNG có công thức hình học kèm theo, hoặc số liệu trùng khớp bất thường với BOQ tham khảo (BASE/VE) mà không có diễn giải tính toán độc lập, **BẮT BUỘC từ chối và yêu cầu tính lại từ dữ liệu bản vẽ CAD/BIM thực tế**. Đây là tiêu chí loại trừ (knockout criterion) — vi phạm sẽ bị đánh rớt toàn bộ Cổng Kiểm soát.
-- 📊 **MA TRẬN KIỂM SOÁT ĐỐI TƯỢNG ĐẦY ĐỦ (MULTI-TARGET AUDIT REGISTER):**
-  Sheet `QA_Audit` **TUYỆT ĐỐI NGHIÊM CẤM** tạo sơ sài 5 dòng tượng trưng chỉ đại diện cho 5 Gate. Bắt buộc phải lập danh mục kiểm tra theo từng cặp `(Gate, Target)` bao quát 100% các phân hệ công tác thực tế của dự án:
-  * **Gate 2 (Vĩ mô & Tỷ lệ):** Bắt buộc có dòng riêng cho (1) Cân bằng đất & đào đắp, (2) Bê tông lót & BTCT, (3) Hàm lượng cốt thép kg/m3 & sợi thép Dramix, (4) Tỷ lệ ván khuôn/bê tông m2/m3.
-  * **Gate 3 (Vi mô & Thực thể CAD):** Bắt buộc có dòng riêng cho:
-    - **Kết cấu thép & Xà gồ mái, Cleats, Bu lông, Giằng:** Ghi rõ bằng chứng khoanh vùng Bounding Box, đọc DIMENSION.text và đếm thực thể trong Block CAD.
-    - **Tường xây gạch, trát & sơn nước:** Ghi rõ chu vi lọt lòng, tỷ lệ trát/xây, trừ giao cột dầm.
-    - **Hệ thống Cửa đi & Cửa sổ Louver:** Ghi rõ kết quả đối chiếu chéo 3 chiều Mặt bằng $\leftrightarrow$ Mặt đứng $\leftrightarrow$ Schedule.
-    - **Sơn sàn Epoxy & Nilon lót:** Ghi rõ diện tích lọt lòng và hệ 3 lớp hoàn thiện.
-    - **Mái tôn & Vách tôn bao che:** Ghi rõ diện tích tôn, máng xối, diềm gió, thoát nước mưa.
-    - **Hố thu, rãnh thu hóa chất & nắp Grating composite.**
-  * **Gate 4 (Quản lý chi phí & Giao diện):** Bắt buộc có dòng riêng cho (1) Danh mục Pareto 80/20 các gói chi phí lớn, (2) Đồng bộ khung bê tông kết cấu - kiến trúc & đóng toàn bộ RFI kỹ thuật.
+- 📊 **MA TRẬN KIỂM SOÁT PHÂN CẤP & ÁNH XẠ DẢI MÃ WBS (HIERARCHICAL MULTI-TARGET & WBS SCOPE MAPPING):**
+  Sheet `QA_Audit` **TUYỆT ĐỐI NGHIÊM CẤM** tạo sơ sài 5 dòng tượng trưng hoặc ghi lặp lại `Gate 2`, `Gate 2`, `Gate 3`, `Gate 3` một cách phẳng lì, không phân cấp. Bắt buộc:
+  * **Phân cấp Cổng con (Hierarchical Sub-gates):** Sử dụng ký hiệu chuẩn `Gate 2.1`, `Gate 2.2`, `Gate 2.3`, `Gate 3.1`, `Gate 3.2`,..., `Gate 4.1`, `Gate 4.2`. Hệ thống kiểm soát `csa_excel_styler.py` hỗ trợ đầy đủ việc nhận diện cổng gốc (Base Gate) và xác nhận điều kiện thông qua cho từng phân hệ con.
+  * **Bắt buộc gắn dải mã WBS trong Cột ĐỐI TƯỢNG (Target):** Mỗi dòng đối tượng bắt buộc phải có tên phân hệ kèm dải mã WBS bao hàm cụ thể trong ngoặc đơn để chứng minh tính bao quát $100\%$ toàn bộ dòng BOQ:
+    - `Gate 1`: 63 dòng công tác BOQ (WBS A.I.01 - C.II.04)
+    - `Gate 2.1`: Công tác đất & nền móng (WBS A.I.01 - A.I.07)
+    - `Gate 2.2`: Cốt thép BTCT móng, giằng, cột, dầm (WBS A.II.01 - A.V.08)
+    - `Gate 2.3`: Bê tông & ván khuôn ngầm và thân (WBS A.II.01 - A.IV.06)
+    - `Gate 3.1`: Kết cấu thép mái, xà gồ Z150, cleat & bu lông (WBS A.VI.01 - A.VI.06)
+    - `Gate 3.2`: Hệ cửa đi & louver (WBS B.V.01 - B.V.03)
+    - `Gate 3.3`: Tường xây gạch block, trát & sơn nước (WBS B.I.01 - B.II.06)
+    - `Gate 3.4`: Sơn sàn Epoxy kháng hóa chất & Nilon lót (WBS B.III.03 - B.III.04)
+    - `Gate 3.5`: Mái tôn Seamlock, vách tôn, máng xối & diềm (WBS B.IV.01 - B.IV.06)
+    - `Gate 3.6`: Hố thu hóa chất, rãnh thu & nắp composite (WBS A.I.03, A.III.07, B.VI.04)
+    - `Gate 4.1`: Gói chi phí trọng yếu Pareto 80/20 (Top 20% dòng BOQ)
+    - `Gate 4.2`: Hồ sơ 4 RFI kỹ thuật & Khung bê tông đấu thầu (RFI-01 - RFI-04)
 - 📋 **GHI NHẬT KÝ THAY VÌ TẠO BOQ:** Mọi phát hiện, bằng chứng và hành động yêu cầu phải ghi một dòng trong `QA_Audit`. Bất kỳ trạng thái hiệu lực `Open` hoặc `RFI Required`, trạng thái QA ngoài enum, hoặc thiếu Gate `Pass` đều chặn khuyến nghị phát hành.
 - 📋 **RFI CÓ CẤU TRÚC:** Chỉ xác nhận phát hành khi RFI cột H theo `Owner=<tên>; Status=<trạng thái>; Due=YYYY-MM-DD` và mọi RFI là `Resolved`, `Closed` hoặc `Cancelled`; `Pending`, rỗng hoặc sai mẫu đều chặn.

@@ -857,3 +857,43 @@ def test_sample_csa_package_reconciles_boq_calculation_rfi_and_qa(tmp_path):
     assert {saved["QA_Audit"].cell(row, 1).value for row in range(6, 11)} == {
         "Gate 0", "Gate 1", "Gate 2", "Gate 3", "Gate 4",
     }
+
+
+def test_save_and_validate_supports_hierarchical_subgates_and_wbs_scope(tmp_path):
+    """Bảng QA_Audit hỗ trợ phân cấp các cổng con (Gate 2.1, 2.2, 3.1) và ánh xạ dải mã WBS."""
+    workbook, boq, calculation, rfi, qa = styler.create_csa_workbook()
+    styler.setup_boq_headers(boq)
+    styler.setup_takeoff_calculation_headers(calculation)
+    styler.setup_rfi_headers(rfi)
+    styler.setup_qa_audit_headers(qa)
+    styler.add_boq_item(
+        boq, 6, "A.01.01", "Bê tông móng M1", "m3", 10.0,
+        "Location=Móng M1; Geometry=8 * 1.60 * 1.40 * 0.40 = 10.00 m3; Deductions=None; Calc ID=CAL-CONC-01",
+    )
+    styler.add_takeoff_calculation_item(
+        calculation, 6, "CAL-CONC-01", "A.01.01", "Móng M1", "260917_ASCO_B11_S Rev.01",
+        "Mặt bằng móng", "8 * 1.60 * 1.40 * 0.40", "Không khấu trừ", "m3", 10.0,
+        "Verified", "Lead QS", "Quantity Class=NET_DESIGN",
+    )
+    
+    subgates = [
+        ("Gate 0", "Hồ sơ bảng tính 4 sheet B11 OP2 (Toàn bộ Workbook)"),
+        ("Gate 1", "63 dòng công tác BOQ (WBS A.I.01 - C.II.04)"),
+        ("Gate 2.1", "Công tác đất & nền móng (WBS A.I.01 - A.I.07)"),
+        ("Gate 2.2", "Cốt thép BTCT móng, giằng, cột, dầm (WBS A.II.01 - A.V.08)"),
+        ("Gate 3.1", "Kết cấu thép mái, xà gồ Z150 (WBS A.VI.01 - A.VI.06)"),
+        ("Gate 3.2", "Hệ cửa đi & louver (WBS B.V.01 - B.V.03)"),
+        ("Gate 4.1", "Gói chi phí trọng yếu Pareto 80/20 (Top 20% dòng BOQ)"),
+        ("Gate 4.2", "Hồ sơ 4 RFI kỹ thuật & Khung bê tông (RFI-01 - RFI-04)"),
+    ]
+    for row_idx, (gate, target) in enumerate(subgates, 6):
+        styler.add_qa_audit_item(
+            qa, row_idx, gate, "Kiểm tra kỹ thuật", target, "Major",
+            "Đã đối soát đầy đủ", "Không yêu cầu hành động", "QA Lead", "Pass", "2026-09-24",
+        )
+
+    out_file = tmp_path / "boq_subgates.xlsx"
+    doc_reg = {"260917_ASCO_B11_S": "Rev.01"}
+    res = styler.save_and_validate_csa_workbook(workbook, out_file, document_register=doc_reg)
+    assert res.passed is True
+
